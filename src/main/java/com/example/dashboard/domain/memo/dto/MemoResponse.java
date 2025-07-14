@@ -1,6 +1,6 @@
 package com.example.dashboard.domain.memo.dto;
 
-import com.example.dashboard.domain.memo.Memo;
+import com.example.dashboard.domain.memo.entity.Memo;
 
 import java.sql.Timestamp;
 import java.time.LocalDate;

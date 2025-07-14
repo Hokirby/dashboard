@@ -5,6 +5,7 @@ import com.example.dashboard.domain.auth.dto.AuthSignInResponse;
 import com.example.dashboard.domain.auth.dto.AuthSignUpRequest;
 import com.example.dashboard.domain.auth.dto.AuthSignUpResponse;
 import com.example.dashboard.domain.auth.service.AuthService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,13 +21,13 @@ public class AuthController {
 
     //회원가입
     @PostMapping("/signup")
-    public AuthSignUpResponse signUp (@RequestBody AuthSignUpRequest authSignUpRequest) {
+    public AuthSignUpResponse signUp (@Valid @RequestBody AuthSignUpRequest authSignUpRequest) {
         return authService.signUp(authSignUpRequest);
     }
 
     //로그인
     @PostMapping("/signin")
-    public AuthSignInResponse signIn (@RequestBody AuthSignInRequest authSignInRequest) {
+    public AuthSignInResponse signIn (@Valid @RequestBody AuthSignInRequest authSignInRequest) {
         return authService.signIn(authSignInRequest);
     }
 

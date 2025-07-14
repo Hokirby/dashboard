@@ -1,10 +1,12 @@
-package com.example.dashboard.domain.memo;
+package com.example.dashboard.domain.memo.service;
 
 import com.example.dashboard.domain.auth.entity.AuthMember;
+import com.example.dashboard.domain.memo.entity.Memo;
 import com.example.dashboard.domain.memo.dto.MemoCreateRequest;
 import com.example.dashboard.domain.memo.dto.MemoListResponse;
 import com.example.dashboard.domain.memo.dto.MemoResponse;
 import com.example.dashboard.domain.memo.dto.MemoUpdateRequest;
+import com.example.dashboard.domain.memo.repository.MemoRepository;
 import com.example.dashboard.exception.InvalidRequestException;
 import com.example.dashboard.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
@@ -65,9 +67,9 @@ public class MemoService {
         }
 
         foundMemo.update(
-                memoUpdateRequest.title(),
-                memoUpdateRequest.content(),
-                memoUpdateRequest.date()
+                memoUpdateRequest.getTitle(),
+                memoUpdateRequest.getContent(),
+                memoUpdateRequest.getDate()
         );
 
         return MemoResponse.toDto(foundMemo);

@@ -1,4 +1,4 @@
-package com.example.dashboard.domain.memo;
+package com.example.dashboard.domain.memo.entity;
 
 import com.example.dashboard.common.TimeStamped;
 import com.example.dashboard.domain.auth.entity.Member;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDate;
 
 @Entity
-@NoArgsConstructor(access= AccessLevel.PROTECTED)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 public class Memo extends TimeStamped {
 
@@ -37,8 +37,14 @@ public class Memo extends TimeStamped {
     }
 
     public void update(String title, String content, LocalDate date) {
-        this.title = title;
-        this.content = content;
-        this.date = date;
+        if (title != null) {
+            this.title = title;
+        }
+        if (content != null) {
+            this.content = content;
+        }
+        if (date != null) {
+            this.date = date;
+        }
     }
 }

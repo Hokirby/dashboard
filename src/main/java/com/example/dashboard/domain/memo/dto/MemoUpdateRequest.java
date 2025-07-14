@@ -1,10 +1,14 @@
 package com.example.dashboard.domain.memo.dto;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
 import java.time.LocalDate;
 
-public record MemoUpdateRequest(
-        String title,
-        String content,
-        LocalDate date
-) {
+@Getter
+@AllArgsConstructor
+public class MemoUpdateRequest {
+    private final String title;
+    private final String content;
+    private final LocalDate date;
 }

@@ -1,5 +1,6 @@
-package com.example.dashboard.domain.memo;
+package com.example.dashboard.domain.memo.repository;
 
+import com.example.dashboard.domain.memo.entity.Memo;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

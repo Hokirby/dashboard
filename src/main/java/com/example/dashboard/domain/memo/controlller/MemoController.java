@@ -1,10 +1,12 @@
-package com.example.dashboard.domain.memo;
+package com.example.dashboard.domain.memo.controlller;
 
 import com.example.dashboard.domain.auth.entity.AuthMember;
 import com.example.dashboard.domain.memo.dto.MemoCreateRequest;
 import com.example.dashboard.domain.memo.dto.MemoListResponse;
 import com.example.dashboard.domain.memo.dto.MemoResponse;
 import com.example.dashboard.domain.memo.dto.MemoUpdateRequest;
+import com.example.dashboard.domain.memo.service.MemoService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -20,7 +22,7 @@ public class MemoController {
 
     // 메모 생성
     @PostMapping
-    public MemoResponse save(@RequestBody MemoCreateRequest memoCreateRequest) {
+    public MemoResponse save(@Valid @RequestBody MemoCreateRequest memoCreateRequest) {
         return memoService.save(memoCreateRequest);
     }
 
@@ -42,7 +44,7 @@ public class MemoController {
     // 매모 수정
     @PostMapping("/{id}")
     public MemoResponse update(@AuthenticationPrincipal AuthMember authMember,
-                               @RequestBody MemoUpdateRequest memoUpdateRequest,
+                               @Valid @RequestBody MemoUpdateRequest memoUpdateRequest,
                                @PathVariable Long id
     ) {
         return memoService.update(id, authMember, memoUpdateRequest);
