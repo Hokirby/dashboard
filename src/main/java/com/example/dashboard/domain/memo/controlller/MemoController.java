@@ -10,6 +10,8 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,40 +24,44 @@ public class MemoController {
 
     // 메모 생성
     @PostMapping
-    public MemoResponse save(@Valid @RequestBody MemoCreateRequest memoCreateRequest) {
-        return memoService.save(memoCreateRequest);
+    public ResponseEntity<MemoResponse> save(@AuthenticationPrincipal AuthMember authMember,
+                                            @Valid @RequestBody MemoCreateRequest memoCreateRequest) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(memoService.save(authMember, memoCreateRequest));
     }
 
     // 메모 단건 조회
     @GetMapping("/{id}")
-    public MemoResponse getMemo(@PathVariable Long id) {
-        return memoService.getMemo(id);
+    public ResponseEntity<MemoResponse> getMemo(@AuthenticationPrincipal AuthMember authMember,
+                                @PathVariable Long id) {
+        return ResponseEntity.ok(memoService.getMemo(authMember, id));
     }
 
     // 메모 다건 조회
     @GetMapping
-    public Page<MemoListResponse> getMemos(
+    public ResponseEntity<Page<MemoListResponse>> getMemos(
+            @AuthenticationPrincipal AuthMember authMember,
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return memoService.getMemos(PageRequest.of(page - 1, size));
+        return ResponseEntity.ok(memoService.getMemos(authMember, PageRequest.of(page - 1, size)));
     }
 
     // 매모 수정
-    @PostMapping("/{id}")
-    public MemoResponse update(@AuthenticationPrincipal AuthMember authMember,
+    @PatchMapping("/{id}")
+    public ResponseEntity<MemoResponse> update(@AuthenticationPrincipal AuthMember authMember,
                                @Valid @RequestBody MemoUpdateRequest memoUpdateRequest,
                                @PathVariable Long id
     ) {
-        return memoService.update(id, authMember, memoUpdateRequest);
+        return ResponseEntity.ok(memoService.update(id, authMember, memoUpdateRequest));
     }
 
     // 메모 삭제
     @DeleteMapping("/{id}")
-    public void delete(
+    public ResponseEntity<Void> delete(
             @AuthenticationPrincipal AuthMember authMember,
             @PathVariable Long id
     ) {
         memoService.delete(id, authMember);
+        return ResponseEntity.ok().build();
     }
 }

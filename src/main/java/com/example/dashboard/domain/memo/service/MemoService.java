@@ -1,6 +1,8 @@
 package com.example.dashboard.domain.memo.service;
 
 import com.example.dashboard.domain.auth.entity.AuthMember;
+import com.example.dashboard.domain.auth.entity.Member;
+import com.example.dashboard.domain.auth.repository.MemberRepository;
 import com.example.dashboard.domain.memo.entity.Memo;
 import com.example.dashboard.domain.memo.dto.MemoCreateRequest;
 import com.example.dashboard.domain.memo.dto.MemoListResponse;
@@ -20,15 +22,20 @@ import org.springframework.transaction.annotation.Transactional;
 public class MemoService {
 
     private final MemoRepository memoRepository;
+    private final MemberRepository memberRepository;
 
     // 메모 생성
     @Transactional
-    public MemoResponse save(MemoCreateRequest memoCreateRequest) {
+    public MemoResponse save(AuthMember authMember, MemoCreateRequest memoCreateRequest) {
+
+        Member foundMember = memberRepository.findById(authMember.getMemberId())
+                .orElseThrow(() -> new NotFoundException("Member Not Found"));
 
         Memo memo = new Memo(
                 memoCreateRequest.title(),
                 memoCreateRequest.content(),
-                memoCreateRequest.date()
+                memoCreateRequest.date(),
+                foundMember
         );
 
         Memo savedMemo = memoRepository.save(memo);
@@ -38,19 +45,23 @@ public class MemoService {
 
     // 메모 단건 조회
     @Transactional(readOnly = true)
-    public MemoResponse getMemo(Long id) {
+    public MemoResponse getMemo(AuthMember authMember, Long id) {
 
         Memo foundMemo = memoRepository.findMemoById(id)
                 .orElseThrow(() -> new NotFoundException("Memo Not Found"));
+
+        if (!authMember.getMemberId().equals(foundMemo.getMember().getId())) {
+            throw new InvalidRequestException("Invalid Member ID");
+        }
 
         return MemoResponse.toDto(foundMemo);
     }
 
     // 메모 다건 조회
     @Transactional(readOnly = true)
-    public Page<MemoListResponse> getMemos(Pageable pageable) {
+    public Page<MemoListResponse> getMemos(AuthMember authMember, Pageable pageable) {
 
-        Page<Memo> memos = memoRepository.findAllByOrderByCreatedAtDesc(pageable);
+        Page<Memo> memos = memoRepository.findAllByMemberIdOrderByCreatedAtDesc(authMember.getMemberId(), pageable);
 
         return memos.map(MemoListResponse::of);
     }
