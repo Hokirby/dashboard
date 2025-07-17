@@ -33,14 +33,6 @@ public class Summary extends TimeStamped {
         this.term = term;
     }
 
-    public void setMemos(List<MemoSummary> memoSummaries) {
-        for (MemoSummary memo : memoSummaries) {
-            if (!this.memos.contains(memo)) {
-                this.memos.add(memo);
-            }
-        }
-    }
-
     public void updateContent(String content) {
         this.content = content;
     }
