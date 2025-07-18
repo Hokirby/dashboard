@@ -40,7 +40,7 @@ public class JwtUtil {
 
         return BEARER_PREFIX +
                 Jwts.builder()
-                        .setSubject(String.valueOf(memberId))
+                        .setSubject(memberId.toString())
                         .claim("email", email)
                         .claim("nickname", nickname)
                         .claim("userRole", memberRole)

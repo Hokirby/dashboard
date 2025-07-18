@@ -1,7 +1,6 @@
 package com.example.dashboard.config;
 
 import com.example.dashboard.domain.auth.entity.AuthMember;
-import com.example.dashboard.domain.auth.enums.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -40,10 +39,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
                     AuthMember authMember = new AuthMember(
-                            Long.parseLong(claims.getId()),
+                            Long.parseLong(claims.getSubject()),
                             claims.get("email", String.class),
                             claims.get("nickname", String.class),
-                            MemberRole.of(claims.get("memberRole", String.class))
+                            claims.get("userRole", String.class)
                     );
                     JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(authMember);
                     SecurityContextHolder.getContext().setAuthentication(authenticationToken);
