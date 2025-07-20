@@ -57,6 +57,7 @@ public class SummaryService {
 
         for (Memo memo : memos) {
             MemoSummary memoSummary = new MemoSummary(memo, savedSummary);
+            savedSummary.getMemos().add(memoSummary);
             memoSummaryRepository.save(memoSummary);
         }
 
@@ -72,12 +73,7 @@ public class SummaryService {
     @Transactional(readOnly = true)
     public SummaryResponse find(AuthMember authMember, Long id) {
 
-        Summary foundSummary = summaryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Summary Not Found"));
-
-        if (!authMember.getMemberId().equals(foundSummary.getMemos().stream().findFirst().get().getMemo().getMember().getId())) {
-            throw new InvalidRequestException("Invalid Member ID");
-        }
+        Summary foundSummary = authenticateAndValidate(authMember, id);
 
         List<Long> memoIds = foundSummary.getMemos()
                 .stream()
@@ -91,12 +87,7 @@ public class SummaryService {
     @Transactional
     public SummaryResponse update(AuthMember authMember, Long id) {
 
-        Summary foundSummary = summaryRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException("Summary Not Found"));
-
-        if (!authMember.getMemberId().equals(foundSummary.getMemos().stream().findFirst().get().getMemo().getMember().getId())) {
-            throw new InvalidRequestException("Invalid Member ID");
-        }
+        Summary foundSummary = authenticateAndValidate(authMember, id);
 
         List<Memo> memos = foundSummary.getMemos().stream()
                 .map(MemoSummary::getMemo)
@@ -121,16 +112,25 @@ public class SummaryService {
     @Transactional
     public void delete(AuthMember authMember, Long id) {
 
+        Summary foundSummary = authenticateAndValidate(authMember, id);
+        summaryRepository.delete(foundSummary);
+    }
+
+    private Summary authenticateAndValidate(AuthMember authMember, Long id) {
+
         Summary foundSummary = summaryRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Summary Not Found"));
 
-        if (!authMember.getMemberId().equals(
-                foundSummary.getMemos().stream().findFirst().get().getMemo().getMember().getId())) {
+        List<MemoSummary> memoSummaries = foundSummary.getMemos();
+        if (memoSummaries.isEmpty()) {
+            throw new NotFoundException("Connected Memo Not Found");
+        }
+
+        Long ownerId = memoSummaries.get(0).getMemo().getMember().getId();
+        if (!authMember.getMemberId().equals(ownerId)) {
             throw new InvalidRequestException("Invalid Member ID");
         }
 
-        memoSummaryRepository.deleteAllInBatch(foundSummary.getMemos());
-
-        summaryRepository.delete(foundSummary);
+        return foundSummary;
     }
 }

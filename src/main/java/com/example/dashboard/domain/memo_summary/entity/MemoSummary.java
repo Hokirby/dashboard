@@ -26,5 +26,6 @@ public class MemoSummary {
 
     public MemoSummary(Memo memo, Summary summary) {
         this.memo = memo;
+        this.summary = summary;
     }
 }
