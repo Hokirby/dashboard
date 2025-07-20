@@ -35,29 +35,27 @@ public class JwtUtil {
         key = Keys.hmacShaKeyFor(bytes);
     }
 
-    public String createAccessToken(Long memberId, String email, String nickname, MemberRole memberRole) {
-        Date date = new Date();
-
-        return BEARER_PREFIX +
-                Jwts.builder()
-                        .setSubject(memberId.toString())
-                        .claim("email", email)
-                        .claim("nickname", nickname)
-                        .claim("userRole", memberRole)
-                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
-                        .setIssuedAt(date) // 발급일
-                        .signWith(key, signatureAlgorithm) // 암호화 알고리즘
-                        .compact();
-    }
-
-    public String createRefreshToken(Long memberId, String email, String nickname, MemberRole memberRole) {
+    public String createAccessToken(Long memberId, String email, MemberRole memberRole) {
         Date date = new Date();
 
         return BEARER_PREFIX +
                 Jwts.builder()
                         .setSubject(String.valueOf(memberId))
                         .claim("email", email)
-                        .claim("nickname", nickname)
+                        .claim("memberRole", memberRole)
+                        .setExpiration(new Date(date.getTime() + ACCESS_TOKEN_TIME))
+                        .setIssuedAt(date) // 발급일
+                        .signWith(key, signatureAlgorithm) // 암호화 알고리즘
+                        .compact();
+    }
+
+    public String createRefreshToken(Long memberId, String email, MemberRole memberRole) {
+        Date date = new Date();
+
+        return BEARER_PREFIX +
+                Jwts.builder()
+                        .setSubject(String.valueOf(memberId))
+                        .claim("email", email)
                         .claim("memberRole", memberRole)
                         .setExpiration(new Date(date.getTime() + REFRESH_TOKEN_TIME))
                         .setIssuedAt(date) // 발급일

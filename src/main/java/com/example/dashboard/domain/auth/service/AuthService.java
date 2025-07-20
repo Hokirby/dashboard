@@ -48,8 +48,8 @@ public class AuthService {
             throw new InvalidRequestException("Password Doesn't Matches");
         }
 
-        String accessToken = jwtUtil.createAccessToken(member.getId(), member.getEmail(), member.getNickname(), member.getRole());
-        String refreshToken = jwtUtil.createRefreshToken(member.getId(), member.getEmail(), member.getNickname(), member.getRole());
+        String accessToken = jwtUtil.createAccessToken(member.getId(), member.getEmail(), member.getRole());
+        String refreshToken = jwtUtil.createRefreshToken(member.getId(), member.getEmail(), member.getRole());
 
         return new AuthSignInResponse(accessToken, refreshToken);
     }

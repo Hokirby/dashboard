@@ -1,6 +1,7 @@
 package com.example.dashboard.config;
 
 import com.example.dashboard.domain.auth.entity.AuthMember;
+import com.example.dashboard.domain.auth.enums.MemberRole;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.MalformedJwtException;
@@ -38,14 +39,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                 Claims claims = jwtUtil.extractClaims(jwt);
 
                 if (SecurityContextHolder.getContext().getAuthentication() == null) {
-                    AuthMember authMember = new AuthMember(
-                            Long.parseLong(claims.getSubject()),
-                            claims.get("email", String.class),
-                            claims.get("nickname", String.class),
-                            claims.get("userRole", String.class)
-                    );
-                    JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(authMember);
-                    SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+                    setAuthentication(claims);
                 }
             } catch (SecurityException | MalformedJwtException e) {
                 log.error("Invalid JWT signature", e);
@@ -67,4 +61,15 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
         filterChain.doFilter(httpRequest, httpResponse);
     }
+
+    private void setAuthentication(Claims claims) {
+        Long memberId = Long.valueOf(claims.getSubject());
+        String email = claims.get("email", String.class);
+        MemberRole memberRole = MemberRole.of(claims.get("memberRole", String.class));
+
+        AuthMember authMember = new AuthMember(memberId, email, memberRole);
+        JwtAuthenticationToken authenticationToken = new JwtAuthenticationToken(authMember);
+        SecurityContextHolder.getContext().setAuthentication(authenticationToken);
+    }
+
 }
