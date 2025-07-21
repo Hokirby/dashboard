@@ -16,7 +16,7 @@ import java.time.LocalDate;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/summary")
+@RequestMapping("/api/summaries")
 public class SummaryController {
 
     private final SummaryService summaryService;
