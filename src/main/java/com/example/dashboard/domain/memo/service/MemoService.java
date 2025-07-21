@@ -61,7 +61,7 @@ public class MemoService {
     @Transactional(readOnly = true)
     public Page<MemoListResponse> getMemos(AuthMember authMember, Pageable pageable) {
 
-        Page<Memo> memos = memoRepository.findAllByMemberIdOrderByCreatedAtDesc(authMember.getMemberId(), pageable);
+        Page<Memo> memos = memoRepository.findAllByMemberIdOrderByCreatedAt(authMember.getMemberId(), pageable);
 
         return memos.map(MemoListResponse::of);
     }

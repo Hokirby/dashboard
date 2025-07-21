@@ -15,7 +15,7 @@ public interface MemoRepository extends JpaRepository<Memo, Long> {
 
     Optional<Memo> findMemoById(Long id);
 
-    Page<Memo> findAllByMemberIdOrderByCreatedAtDesc(Long memberId, Pageable pageable);
+    Page<Memo> findAllByMemberIdOrderByCreatedAt(Long memberId, Pageable pageable);
 
     List<Memo> findAllByMemberIdAndDateBetween(Long memberId, LocalDate startDate, LocalDate endDate);
 }
