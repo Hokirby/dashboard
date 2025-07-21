@@ -24,16 +24,20 @@ public class MemoController {
 
     // 메모 생성
     @PostMapping
-    public ResponseEntity<MemoResponse> save(@AuthenticationPrincipal AuthMember authMember,
-                                            @Valid @RequestBody MemoCreateRequest memoCreateRequest) {
+    public ResponseEntity<MemoResponse> save(
+            @AuthenticationPrincipal AuthMember authMember,
+            @Valid @RequestBody MemoCreateRequest memoCreateRequest
+    ) {
         return ResponseEntity.status(HttpStatus.CREATED).body(memoService.save(authMember, memoCreateRequest));
     }
 
     // 메모 단건 조회
     @GetMapping("/{id}")
-    public ResponseEntity<MemoResponse> getMemo(@AuthenticationPrincipal AuthMember authMember,
-                                @PathVariable Long id) {
-        return ResponseEntity.ok(memoService.getMemo(authMember, id));
+    public ResponseEntity<MemoResponse> get(
+            @AuthenticationPrincipal AuthMember authMember,
+            @PathVariable Long id
+    ) {
+        return ResponseEntity.ok(memoService.find(authMember, id));
     }
 
     // 메모 다건 조회
@@ -43,14 +47,15 @@ public class MemoController {
             @RequestParam(defaultValue = "1") int page,
             @RequestParam(defaultValue = "10") int size
     ) {
-        return ResponseEntity.ok(memoService.getMemos(authMember, PageRequest.of(page - 1, size)));
+        return ResponseEntity.ok(memoService.findMemos(authMember, PageRequest.of(page - 1, size)));
     }
 
     // 매모 수정
     @PatchMapping("/{id}")
-    public ResponseEntity<MemoResponse> update(@AuthenticationPrincipal AuthMember authMember,
-                               @Valid @RequestBody MemoUpdateRequest memoUpdateRequest,
-                               @PathVariable Long id
+    public ResponseEntity<MemoResponse> update(
+            @AuthenticationPrincipal AuthMember authMember,
+            @Valid @RequestBody MemoUpdateRequest memoUpdateRequest,
+            @PathVariable Long id
     ) {
         return ResponseEntity.ok(memoService.update(id, authMember, memoUpdateRequest));
     }

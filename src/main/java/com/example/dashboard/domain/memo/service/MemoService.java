@@ -45,7 +45,7 @@ public class MemoService {
 
     // 메모 단건 조회
     @Transactional(readOnly = true)
-    public MemoResponse getMemo(AuthMember authMember, Long id) {
+    public MemoResponse find(AuthMember authMember, Long id) {
 
         Memo foundMemo = memoRepository.findMemoById(id)
                 .orElseThrow(() -> new NotFoundException("Memo Not Found"));
@@ -59,7 +59,7 @@ public class MemoService {
 
     // 메모 다건 조회
     @Transactional(readOnly = true)
-    public Page<MemoListResponse> getMemos(AuthMember authMember, Pageable pageable) {
+    public Page<MemoListResponse> findMemos(AuthMember authMember, Pageable pageable) {
 
         Page<Memo> memos = memoRepository.findAllByMemberIdOrderByCreatedAt(authMember.getMemberId(), pageable);
 

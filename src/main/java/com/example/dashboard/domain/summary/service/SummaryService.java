@@ -6,6 +6,7 @@ import com.example.dashboard.domain.memo.entity.Memo;
 import com.example.dashboard.domain.memo.repository.MemoRepository;
 import com.example.dashboard.domain.memo_summary.entity.MemoSummary;
 import com.example.dashboard.domain.memo_summary.repository.MemoSummaryRepository;
+import com.example.dashboard.domain.summary.dto.SummaryListResponse;
 import com.example.dashboard.domain.summary.dto.SummaryResponse;
 import com.example.dashboard.domain.summary.entity.Summary;
 import com.example.dashboard.domain.summary.enums.TermType;
@@ -13,6 +14,8 @@ import com.example.dashboard.domain.summary.repository.SummaryRepository;
 import com.example.dashboard.exception.InvalidRequestException;
 import com.example.dashboard.exception.NotFoundException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -81,6 +84,15 @@ public class SummaryService {
                 .toList();
 
         return SummaryResponse.toDto(foundSummary, memoIds);
+    }
+
+    // 요약 다건 조회
+    @Transactional(readOnly = true)
+    public Page<SummaryListResponse> findSummaries(AuthMember authMember, Pageable pageable) {
+
+        Page<Summary> summaries = summaryRepository.findAllByMemberId(authMember.getMemberId(), pageable);
+
+        return summaries.map(SummaryListResponse::of);
     }
 
     // 요약 재생성, 교체
