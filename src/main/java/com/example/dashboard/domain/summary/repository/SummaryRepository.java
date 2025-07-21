@@ -14,7 +14,7 @@ public interface SummaryRepository extends JpaRepository<Summary, Long> {
                 JOIN s.memos ms
                 JOIN ms.memo m
                 WHERE m.member.id = :memberId
-                ORDER BY s.createdAt DESC
+                ORDER BY s.createdAt ASC
             """)
-    Page<Summary> findAllByMemberId(@Param("memberId") Long memberId, Pageable pageable);
+    Page<Summary> findAllByMemberIdOOrderByCreatedAt(@Param("memberId") Long memberId, Pageable pageable);
 }

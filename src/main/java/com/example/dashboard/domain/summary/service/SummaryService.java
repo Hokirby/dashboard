@@ -90,7 +90,7 @@ public class SummaryService {
     @Transactional(readOnly = true)
     public Page<SummaryListResponse> findSummaries(AuthMember authMember, Pageable pageable) {
 
-        Page<Summary> summaries = summaryRepository.findAllByMemberId(authMember.getMemberId(), pageable);
+        Page<Summary> summaries = summaryRepository.findAllByMemberIdOOrderByCreatedAt(authMember.getMemberId(), pageable);
 
         return summaries.map(SummaryListResponse::of);
     }
