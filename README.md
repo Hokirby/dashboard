@@ -36,11 +36,13 @@
 
 ### 4. ERD
 
-![ERD]("https://github.com/user-attachments/assets/a67671b6-4077-455c-ac80-7af2fcbc2710")
+![ERD](https://github.com/user-attachments/assets/b2cfd8cf-42bf-41b2-ad74-48d3d1eea74b)
 
 ### 5. 아키텍쳐
 
 ### 6. 관련 내용 정리
+
+[TermType 관련 정리](https://lakevely27.tistory.com/42)
 
 ### 7. 주요 commit
 
