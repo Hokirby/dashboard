@@ -1,14 +1,17 @@
-## 일정 관리 어플
+# 게시판(DashBoard)
+
+GPT 기반 AI 요약 기능이 탑재된 메모·게시판 프로젝트입니다<br>
+사용자는 메모를 작성하고 기간별 요약을 자동 생성해 내용을 관리할 수 있습니다
 
 ---
 
-[1. 개발환경](#1-개발환경)<br>
-[2. 디렉터리 구조](#2-디렉터리-구조)<br>
-[3. API 명세서](#3-api-명세서)<br>
-[4. ERD](#4-ERD)<br>
-[5. 아키텍쳐](#5-아키텍쳐)<br>
-[6. 관련 내용 정리](#6-관련-내용-정리)<br>
-[7. 주요 commit](#7-주요-commit)
+[**1. 개발환경**](#1-개발환경)<br>
+[**2. 디렉터리 구조**](#2-디렉터리-구조)<br>
+[**3. API 명세서**](#3-api-명세서)<br>
+[**4. ERD**](#4-ERD)<br>
+[**5. 아키텍쳐**](#5-아키텍쳐)<br>
+[**6. 관련 내용 정리**](#6-관련-내용-정리)<br>
+[**7. 주요 commit**](#7-주요-commit)
 
 
 ### 1. 개발환경
@@ -25,10 +28,11 @@
 + H2 Database h2:2.3.2322
 + MySQL Connector-j 8.3.0
 + Spring AI 1.0.0
++ OpenAI GPT
 
 ### 2. 디렉터리 구조
 
-![디렉터리 이미지](https://github.com/user-attachments/assets/abfe8dcf-32f0-425b-b866-1ee3a8f43514)
+<img src="https://github.com/user-attachments/assets/abfe8dcf-32f0-425b-b866-1ee3a8f43514" alt="directory" width="203" height="336">
 
 ### 3. API 명세서
 
@@ -36,13 +40,14 @@
 
 ### 4. ERD
 
-![ERD](https://github.com/user-attachments/assets/b2cfd8cf-42bf-41b2-ad74-48d3d1eea74b)
+<img src="https://github.com/user-attachments/assets/b0c8d4fd-5d3f-4e13-9af9-f335928d9ce8" alt="directory" width="333" height="404">
 
 ### 5. 아키텍쳐
 
 ### 6. 관련 내용 정리
 
-[TermType 관련 정리](https://lakevely27.tistory.com/42)
++ [TermType 관련 정리](https://lakevely27.tistory.com/42)<br>
+  JAVA 의 LocalDate 와 Enum 사용
 
 ### 7. 주요 commit
 

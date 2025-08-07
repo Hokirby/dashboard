@@ -14,6 +14,7 @@ public enum TermType {
         }
     },
     WEEKLY {
+        @Override
         public LocalDate[] getDateRange(LocalDate date) {
             LocalDate start = date.with(DayOfWeek.MONDAY);
             LocalDate end = start.plusDays(6);
